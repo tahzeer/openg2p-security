@@ -4,10 +4,10 @@
     "version": "15.0.1.1.0",
     "sequence": 1,
     "author": "OpenG2P",
-    "website": "https://github.com/OpenG2P/odoo-json-field",
+    "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
-    "development_status": "Alpha",
-    "depends": ['g2p_encryption','g2p_registry_base'],
+    "development_status": "Production/Stable",
+    "depends": ["g2p_encryption", "g2p_registry_base"],
     "data": [],
     "assets": {
         "web.assets_backend": [],
