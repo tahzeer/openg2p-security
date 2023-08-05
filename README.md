@@ -1,15 +1,10 @@
 
-<!-- /!\ Non OCA Context : Set here the badge of your runbot / runboat instance. -->
-[![Pre-commit Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml/badge.svg?branch=15.0-1.1.0)](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml?query=branch%3A15.0-1.1.0)
-[![Build Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml/badge.svg?branch=15.0-1.1.0)](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml?query=branch%3A15.0-1.1.0)
-[![codecov](https://codecov.io/gh/OpenG2P/openg2p-security/branch/15.0-1.1.0/graph/badge.svg)](https://codecov.io/gh/OpenG2P/openg2p-security)
-<!-- /!\ Non OCA Context : Set here the badge of your translation instance. -->
-
 <!-- /!\ do not modify above this line -->
 
-# OpenG2P Security
+# OpenG2P Security 
+### (_Alpha version_) ###
 
-This repo is contains modules used by OpenG2P Security
+This repo contains modules for the encryption of the registry. Refer to [OpenG2P Docs](https://docs.openg2p.org/v/1.1).
 
 <!-- /!\ do not modify below this line -->
 
