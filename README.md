@@ -16,8 +16,8 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[g2p_encryption](g2p_encryption/) | 15.0.1.1.0 |  | G2P: Encryption
-[g2p_registry_encryption](g2p_registry_encryption/) | 15.0.1.1.0 |  | G2P:Registry Encryption
+[g2p_encryption](g2p_encryption/) | 15.0.1.2.0 |  | G2P: Encryption
+[g2p_registry_encryption](g2p_registry_encryption/) | 15.0.1.2.0 |  | G2P:Registry Encryption
 
 [//]: # (end addons)
 
