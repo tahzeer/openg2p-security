@@ -1,130 +1,3 @@
-# import logging
-
-# from odoo import api, fields, models
-
-# from odoo.addons.g2p_encryption.models.crypto import AESCipher
-
-# _logger = logging.getLogger(__name__)
-
-
-# class EncryptedPartner(models.Model):
-#     _inherit = "res.partner"
-
-#     # is_encrypted = fields.Boolean("Is encrypted?")
-
-#     name_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("name", "name_decrypted"), store=False
-#     )
-#     family_name_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field(
-#             "family_name", "family_name_decrypted"
-#         ),
-#         store=False,
-#     )
-#     given_name_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("given_name", "given_name_decrypted"),
-#         store=False,
-#     )
-#     addl_name_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("addl_name", "addl_name_decrypted"),
-#         store=False,
-#     )
-#     email_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("email", "email_decrypted"),
-#         store=False,
-#     )
-#     phone_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("phone", "phone_decrypted"),
-#         store=False,
-#     )
-#     mobile_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("mobile", "mobile_decrypted"),
-#         store=False,
-#     )
-#     address_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field("address", "address_decrypted"),
-#         store=False,
-#     )
-#     birth_place_decrypted = fields.Char(
-#         compute=lambda self: self._decrypt_field(
-#             "birth_place", "birth_place_decrypted"
-#         ),
-#         store=False,
-#     )
-
-#     @api.model
-#     def create(self, vals):
-#         record = super(EncryptedPartner, self).create(vals)
-#         # TODO encryption key should be moved to a secret vault.
-#         encryption_key = self.env["ir.config_parameter"].get_param("g2p_enc_key", "")
-#         if encryption_key:
-#             crypto = AESCipher(encryption_key)
-#             record["name"] = crypto.encrypt(record["name"]) if record["name"] else None
-#             record["family_name"] = (
-#                 crypto.encrypt(record["family_name"]) if record["family_name"] else None
-#             )
-#             record["given_name"] = (
-#                 crypto.encrypt(record["given_name"]) if record["given_name"] else None
-#             )
-#             record["addl_name"] = (
-#                 crypto.encrypt(record["addl_name"]) if record["addl_name"] else None
-#             )
-#             record["display_name"] = (
-#                 crypto.encrypt(record["display_name"])
-#                 if record["display_name"]
-#                 else None
-#             )
-#             record["email"] = (
-#                 crypto.encrypt(record["email"]) if record["email"] else None
-#             )
-#             record["phone"] = (
-#                 crypto.encrypt(record["phone"]) if record["phone"] else None
-#             )
-#             record["mobile"] = (
-#                 crypto.encrypt(record["mobile"]) if record["mobile"] else None
-#             )
-#             record["address"] = (
-#                 crypto.encrypt(record["address"]) if record["address"] else None
-#             )
-#             record["birth_place"] = (
-#                 crypto.encrypt(record["birth_place"]) if record["birth_place"] else None
-#             )
-
-#         return record
-
-#     # @api.model
-#     # def write(self, vals):
-#     #     record = super(EncryptedPartner, self).create(vals)
-#     #     #TODO encryption key should be moved to a secret vault.
-#     #     encryption_key = self.env['ir.config_parameter'].get_param('g2p_enc_key', '')
-#     #     if encryption_key:
-#     #         crypto = AESCipher(encryption_key)
-#     #         record["name"] = crypto.encrypt(record["name"]) if record["name"] else None
-#     #         record["family_name"] = crypto.encrypt(record["family_name"]) if record["family_name"] else None
-#     #         record["given_name"] = crypto.encrypt(record["given_name"]) if record["given_name"] else None
-#     #         record["addl_name"] = crypto.encrypt(record["addl_name"]) if record["addl_name"] else None
-#     #         record["display_name"] = crypto.encrypt(record["display_name"]) if record["display_name"] else None
-#     #         record["email"] = crypto.encrypt(record["email"]) if record["email"] else None
-#     #         record["phone"] = crypto.encrypt(record["phone"]) if record["phone"] else None
-#     #         record["mobile"] = crypto.encrypt(record["mobile"]) if record["mobile"] else None
-#     #         record["address"] = crypto.encrypt(record["address"]) if record["address"] else None
-#     #         record["birth_place"] = crypto.encrypt(record["birth_place"]) if record["birth_place"] else None
-
-#     #     return record
-
-#     def _decrypt_field(self, actual_field, decrypted_field):
-#         # TODO encryption key should be moved to a secret vault.
-#         encryption_key = self.env["ir.config_parameter"].get_param("g2p_enc_key", "")
-#         if encryption_key:
-#             crypto = AESCipher(encryption_key)
-#             for rec in self:
-#                 if rec[actual_field]:
-#                     rec[decrypted_field] = crypto.decrypt(rec[actual_field])
-#                 else:
-#                     rec[decrypted_field] = ""
-#                 _logger.info("%s , %s", decrypted_field, rec[decrypted_field])
-
-
 import base64
 from odoo import fields
 
@@ -135,51 +8,10 @@ from odoo.addons.g2p_encryption.models.keymanager_api import EncryptionModule, O
 class EncryptedPartner(models.Model):
     _inherit = "res.partner"
 
-    # is_encrypted = fields.Boolean("Is encrypted?")
-
-    name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("name", "name_decrypted"), store=False
-    )
-    family_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field(
-            "family_name", "family_name_decrypted"
-        ),
-        store=False,
-    )
-    given_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("given_name", "given_name_decrypted"),
-        store=False,
-    )
-    addl_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("addl_name", "addl_name_decrypted"),
-        store=False,
-    )
-    email_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("email", "email_decrypted"),
-        store=False,
-    )
-    phone_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("phone", "phone_decrypted"),
-        store=False,
-    )
-    mobile_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("mobile", "mobile_decrypted"),
-        store=False,
-    )
-    address_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("address", "address_decrypted"),
-        store=False,
-    )
-    birth_place_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field(
-            "birth_place", "birth_place_decrypted"
-        ),
-        store=False,
-    )
+    is_encrypted = fields.Boolean("Is encrypted?")
 
     @api.model
     def create(self, vals):
-        record = super(EncryptedPartner, self).create(vals)
         odoo_token = {
             "auth_url": "https://keycloak.dev.openg2p.net/realms/openg2p/protocol/openid-connect/token",
             "auth_client_id": "openg2p-admin-client",
@@ -193,12 +25,8 @@ class EncryptedPartner(models.Model):
         application_id = "REGISTRATION"
         reference_id = "string"
 
-        # access_token = odoo_auth.get_access_token()
-        # print(f"Access Token: {access_token}")
-
         def encrypt_field(field_value):
             encoded_field_value = base64.b64encode(field_value.encode()).decode()
-            # print(f"Original Field Value: {field_value}")
             encrypted_data = encryption_module_instance.encrypt_data(
                 {
                     "applicationId": application_id,
@@ -208,35 +36,40 @@ class EncryptedPartner(models.Model):
             )
             return encrypted_data
 
-        record["name"] = encrypt_field(record["name"]) if record["name"] else None
-        record["family_name"] = (
-            encrypt_field(record["family_name"]) if record["family_name"] else None
+        vals["name"] = encrypt_field(vals.get("name")) if vals.get("name") else None
+        vals["family_name"] = (
+            encrypt_field(vals.get("family_name")) if vals.get("family_name") else None
         )
-        record["given_name"] = (
-            encrypt_field(record["given_name"]) if record["given_name"] else None
+        vals["given_name"] = (
+            encrypt_field(vals.get("given_name")) if vals.get("given_name") else None
         )
-        record["addl_name"] = (
-            encrypt_field(record["addl_name"]) if record["addl_name"] else None
+        vals["addl_name"] = (
+            encrypt_field(vals.get("addl_name")) if vals.get("addl_name") else None
         )
-        record["display_name"] = (
-            encrypt_field(record["display_name"]) if record["display_name"] else None
+        vals["display_name"] = (
+            encrypt_field(vals.get("display_name"))
+            if vals.get("display_name")
+            else None
         )
-        record["email"] = encrypt_field(record["email"]) if record["email"] else None
-        record["phone"] = encrypt_field(record["phone"]) if record["phone"] else None
-        record["mobile"] = encrypt_field(record["mobile"]) if record["mobile"] else None
-        record["address"] = (
-            encrypt_field(record["address"]) if record["address"] else None
+        vals["email"] = encrypt_field(vals.get("email")) if vals.get("email") else None
+        vals["phone"] = encrypt_field(vals.get("phone")) if vals.get("phone") else None
+        vals["mobile"] = (
+            encrypt_field(vals.get("mobile")) if vals.get("mobile") else None
         )
-        record["birth_place"] = (
-            encrypt_field(record["birth_place"]) if record["birth_place"] else None
+        vals["address"] = (
+            encrypt_field(vals.get("address")) if vals.get("address") else None
         )
+        vals["birth_place"] = (
+            encrypt_field(vals.get("birth_place")) if vals.get("birth_place") else None
+        )
+        vals["is_encrypted"] = bool(vals.get("name"))
 
-        print("create methoddd", record)
+        record = super(EncryptedPartner, self).create(vals)
         return record
 
-    def _decrypt_field(self, actual_field, decrypted_field):
+    def write(self, vals):
         odoo_token = {
-            "auth_url": "https://keycloak.dev.openg2p.net/realms/mosip/protocol/openid-connect/token",
+            "auth_url": "https://keycloak.dev.openg2p.net/realms/openg2p/protocol/openid-connect/token",
             "auth_client_id": "openg2p-admin-client",
             "auth_client_secret": "x75SU2hqKQX7IPob",
             "auth_grant_type": "client_credentials",
@@ -245,21 +78,238 @@ class EncryptedPartner(models.Model):
         odoo_auth = OdooAuth(**odoo_token)
         base_url = "https://dev.openg2p.net/v1/keymanager"
         encryption_module_instance = EncryptionModule(base_url, odoo_auth)
-        application_id = "KERNEL"
-        reference_id = "SIGN"
+        application_id = "REGISTRATION"
+        reference_id = "string"
+
+        def encrypt_field(field_value):
+            encoded_field_value = base64.b64encode(field_value.encode()).decode()
+            encrypted_data = encryption_module_instance.encrypt_data(
+                {
+                    "applicationId": application_id,
+                    "referenceId": reference_id,
+                    "data": encoded_field_value,
+                }
+            )
+            return encrypted_data
+
+        for record in self:
+            if "name" in vals:
+                vals["name"] = (
+                    encrypt_field(vals.get("name")) if vals.get("name") else None
+                )
+            if "family_name" in vals:
+                vals["family_name"] = (
+                    encrypt_field(vals.get("family_name"))
+                    if vals.get("family_name")
+                    else None
+                )
+            if "given_name" in vals:
+                vals["given_name"] = (
+                    encrypt_field(vals.get("given_name"))
+                    if vals.get("given_name")
+                    else None
+                )
+            if "addl_name" in vals:
+                vals["addl_name"] = (
+                    encrypt_field(vals.get("addl_name"))
+                    if vals.get("addl_name")
+                    else None
+                )
+            if "display_name" in vals:
+                vals["display_name"] = (
+                    encrypt_field(vals.get("display_name"))
+                    if vals.get("display_name")
+                    else None
+                )
+            if "email" in vals:
+                vals["email"] = (
+                    encrypt_field(vals.get("email")) if vals.get("email") else None
+                )
+            if "phone" in vals:
+                vals["phone"] = (
+                    encrypt_field(vals.get("phone")) if vals.get("phone") else None
+                )
+            if "mobile" in vals:
+                vals["mobile"] = (
+                    encrypt_field(vals.get("mobile")) if vals.get("mobile") else None
+                )
+            if "address" in vals:
+                vals["address"] = (
+                    encrypt_field(vals.get("address")) if vals.get("address") else None
+                )
+            if "birth_place" in vals:
+                vals["birth_place"] = (
+                    encrypt_field(vals.get("birth_place"))
+                    if vals.get("birth_place")
+                    else None
+                )
+
+        result = super(EncryptedPartner, self).write(vals)
+        return result
+
+    def _read(self, fields):
+        odoo_token = {
+            "auth_url": "https://keycloak.dev.openg2p.net/realms/openg2p/protocol/openid-connect/token",
+            "auth_client_id": "openg2p-admin-client",
+            "auth_client_secret": "x75SU2hqKQX7IPob",
+            "auth_grant_type": "client_credentials",
+        }
+
+        odoo_auth = OdooAuth(**odoo_token)
+        base_url = "https://dev.openg2p.net/v1/keymanager"
+        encryption_module_instance = EncryptionModule(base_url, odoo_auth)
+        application_id = "REGISTRATION"
+        reference_id = ""
 
         def decrypt_field(field_value):
-            return encryption_module_instance.decrypt_data(
+            decrypted_data = encryption_module_instance.decrypt_data(
                 {
                     "applicationId": application_id,
                     "referenceId": reference_id,
                     "data": field_value,
                 }
             )
+            while decrypted_data and len(decrypted_data) % 4 != 0:
+                decrypted_data += "="
+            if field_value and not decrypted_data:
+                return field_value
+            decoded_value = base64.b64decode(decrypted_data).decode("utf-8")
 
-        for rec in self:
-            if rec[actual_field]:
-                rec[decrypted_field] = decrypt_field(rec[actual_field])
-            else:
-                rec[decrypted_field] = ""
-            # print(decrypted_field, ",", rec[decrypted_field])
+            return decoded_value
+
+        is_decrypt_fields_enabled = self.env["ir.config_parameter"].get_param(
+            "g2p_registry.decrypt_fields", default=False
+        )
+        super(EncryptedPartner, self)._read(fields)
+
+        for record in self:
+            if is_decrypt_fields_enabled and record["is_encrypted"]:
+                if "name" in record and record["name"]:
+                    decrytt = decrypt_field(record["name"])
+                    self.env.cache.set(record, self._fields["name"], decrytt)
+                if "family_name" in record and record["family_name"]:
+                    decrytt = decrypt_field(record["family_name"])
+                    self.env.cache.set(record, self._fields["family_name"], decrytt)
+                if "addl_name" in record and record["addl_name"]:
+                    decrytt = decrypt_field(record["addl_name"])
+                    self.env.cache.set(record, self._fields["addl_name"], decrytt)
+                if "display_name" in record and record["display_name"]:
+                    decrytt = decrypt_field(record["display_name"])
+                    self.env.cache.set(record, self._fields["display_name"], decrytt)
+                if "given_name" in record and record["given_name"]:
+                    decrytt = decrypt_field(record["given_name"])
+                    self.env.cache.set(record, self._fields["given_name"], decrytt)
+                if "email" in record and record["email"]:
+                    decrytt = decrypt_field(record["email"])
+                    self.env.cache.set(record, self._fields["email"], decrytt)
+                if "phone" in record and record["phone"]:
+                    decrytt = decrypt_field(record["phone"])
+                    self.env.cache.set(record, self._fields["phone"], decrytt)
+                if "address" in record and record["address"]:
+                    decrytt = decrypt_field(record["address"])
+                    self.env.cache.set(record, self._fields["address"], decrytt)
+                if "birth_place" in record and record["birth_place"]:
+                    decrytt = decrypt_field(record["birth_place"])
+                    self.env.cache.set(record, self._fields["birth_place"], decrytt)
+                if "birth_place" in record and record["birth_place"]:
+                    decrytt = decrypt_field(record["birth_place"])
+                    self.env.cache.set(record, self._fields["birth_place"], decrytt)
+                # if "is_encrypted" in record:
+                #     record["is_encrypted"] = False
+                    
+
+
+
+# def read(self, fields=None, load="_classic_read"):
+#     odoo_token = {
+#         "auth_url": "https://keycloak.dev.openg2p.net/realms/openg2p/protocol/openid-connect/token",
+#         "auth_client_id": "openg2p-admin-client",
+#         "auth_client_secret": "x75SU2hqKQX7IPob",
+#         "auth_grant_type": "client_credentials",
+#     }
+
+#     odoo_auth = OdooAuth(**odoo_token)
+#     base_url = "https://dev.openg2p.net/v1/keymanager"
+#     encryption_module_instance = EncryptionModule(base_url, odoo_auth)
+#     application_id = "REGISTRATION"
+#     reference_id = ""
+
+#     def decrypt_field(field_value):
+#         decrypted_data = encryption_module_instance.decrypt_data(
+#             {
+#                 "applicationId": application_id,
+#                 "referenceId": reference_id,
+#                 "data": field_value,
+#             }
+#         )
+#         while len(decrypted_data) % 4 != 0:
+#             decrypted_data += "="
+#         decoded_value = base64.b64decode(decrypted_data).decode("utf-8")
+#         return decoded_value
+
+#     is_decrypt_fields_enabled = self.env["ir.config_parameter"].get_param(
+#         "g2p_registry.decrypt_fields", default=False
+#     )
+#     records = super(EncryptedPartner, self).read(fields=fields, load=load)
+
+#     for record in records:
+#         if is_decrypt_fields_enabled:
+#             if "name" in record:
+#                 record["name"] = (
+#                     decrypt_field(record.get("name"))
+#                     if record.get("name")
+#                     else None
+#                 )
+#             if "family_name" in record:
+#                 record["family_name"] = (
+#                     decrypt_field(record.get("family_name"))
+#                     if record.get("family_name")
+#                     else None
+#                 )
+#             if "given_name" in record:
+#                 record["given_name"] = (
+#                     decrypt_field(record.get("given_name"))
+#                     if record.get("given_name")
+#                     else None
+#                 )
+#             if "addl_name" in record:
+#                 record["addl_name"] = (
+#                     decrypt_field(record.get("addl_name"))
+#                     if record.get("addl_name")
+#                     else None
+#                 )
+#             if "display_name" in record:
+#                 record["display_name"] = (
+#                     decrypt_field(record.get("display_name"))
+#                     if record.get("display_name")
+#                     else None
+#                 )
+#             if "email" in record:
+#                 record["email"] = (
+#                     decrypt_field(record.get("email"))
+#                     if record.get("email")
+#                     else None
+#                 )
+#             # if "phone" in record:
+#             #     record["phone"] = (
+#             #         decrypt_field(record.get("phone"))
+#             #         if record.get("phone")
+#             #         else None
+#             #     )
+
+#             if "address" in record:
+#                 record["address"] = (
+#                     decrypt_field(record.get("address"))
+#                     if record.get("address")
+#                     else None
+#                 )
+#             if "birth_place" in record:
+#                 record["birth_place"] = (
+#                     decrypt_field(record.get("birth_place"))
+#                     if record.get("birth_place")
+#                     else None
+#                 )
+#             if "is_encrypted" in record:
+#                 record["is_encrypted"] = False
+#     # print("========going to registry or encyrtping", records)
+#     return records

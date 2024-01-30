@@ -7,8 +7,12 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_encryption", "g2p_registry_base"],
-    "data": [],
+    "depends": ["g2p_encryption", "g2p_registry_base", "g2p_registry_individual"],
+    "data": [
+        "views/decrypt_file.xml",
+        "views/res_config_view.xml",
+        "security/security.xml",
+    ],
     "assets": {
         "web.assets_backend": [],
         "web.assets_qweb": [],

@@ -76,7 +76,7 @@ class EncryptionModule(object):
             },
         }
         response = requests.post(url, json=payload, headers=headers)
-        print(response.content)
+        # print(response.content)
 
         return response.json().get("response", {}).get("data", None)
 
@@ -137,7 +137,10 @@ class EncryptionModule(object):
             },
         }
         response = requests.post(url, json=payload, headers=headers)
-        return response.json().get("response", {}).get("data", None)
+        response = response.json().get("response", {})
+        if response:
+            response = response.get("data", {})
+        return response
 
     def get_signing_public_key(self):
         url = f"{self.base_url}/getSigningPublicKey"
@@ -201,11 +204,6 @@ class EncryptionModule(object):
         return response.json()
 
     def jwt_sign(self, data):
-        data_to_sign = data.get("dataToSign", None)
-
-        if data_to_sign is None:
-            print("Data to sign is null. Skipping JWT signing.")
-            return None
         url = f"{self.base_url}/jwtSign"
         headers = {"Cookie": f"Authorization={self.access_token}"}
         payload = {
@@ -218,9 +216,9 @@ class EncryptionModule(object):
                 "applicationId": data.get("applicationId", "string"),
                 "referenceId": data.get("referenceId", "string"),
                 "includePayload": True,
-                "includeCertificate": True,
-                "includeCertHash": True,
-                "certificateUrl": data.get("certificateUrl", "string"),
+                # "includeCertificate": True,
+                # "includeCertHash": True,
+                # "certificateUrl": data.get("certificateUrl", "string"),
             },
         }
         response = requests.post(url, json=payload, headers=headers)
@@ -229,7 +227,7 @@ class EncryptionModule(object):
                 response.json().get("response", {}).get("jwtSignedData", None)
             )
         except ValueError:
-            print("Error parsing response JSON. JWT signing failed.")
+            # print("Error parsing response JSON. JWT signing failed.")
             jwt_signed_data = None
 
         return jwt_signed_data
@@ -351,5 +349,11 @@ class EncryptionModule(object):
 #     "dataToSign": "aGVsbG8gd29ybGQ=",
 #     "certificateUrl": certificate_data,
 # }
-# encrypted_data = odoo_api.jwt_sign(data_to_encrypt)
-# print("Encrypted Data:", encrypted_data)
+# data_to_encrypt = {
+#     "applicationId": "REGISTRATION",
+#     "referenceId": "",
+#     "data": "c-UgAvGn5o_iAOpSauP29SAlRRbmEEwhl3UkgK3u_0RR4u_ayqcB5aAuaDD5YDonsNxATVvt9UEqbyHtdTEnIb-U3KcdW7DtgvbT_n1yD4oeIvSK6hTx7bCjrlOrs-4JT8VN6J6heS19cuhtV88wj3Hmr0GBGIpfDSHkW4auOfVDiw8dlVUm6YiwhnGBvF4AJ2Nb7h_Hbm0XbO-JRNKHjIjPXqfJ0qjDSW4Si_d89u9iwNGMZy0xCXJbeBaHf6HTY3uQMwC-dqJgbR-W4kjXrsy8jbSa_PXaMOWoQCKf4AOUZZ6L9Bqv_l7HiaHKPdW_RU-e3r48MMtFLLDLnhy5N9CGpploF5JgKe8_Wnok42m-1lTb2HjwjCI2pJcm6WVvI0tFWV9TUExJVFRFUiOMwXdK6x8x6v2DhUcv434Bl-s88jQ1cFPFwQ",
+# }
+# decrypted_data = odoo_api.decrypt_data(data_to_encrypt)
+# print("Decrypted Data:", decrypted_data)
+

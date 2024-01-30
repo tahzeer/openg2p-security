@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="openg2p_inherit_res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">openg2p.res.config.settings.view.inherit.setup</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="999" />
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="row mt16 o_settings_container" name="validation_container">
+                    <div
+                        class="col-12 col-lg-6 o_setting_box"
+                        id="decrypt_fields"
+                        title="Decrption of fields"
+                    >
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <div>
+                                <field name="decrypt_fields" />
+                                <div>
+                                    <label for="decrypt_fields" string="Decrypt fields" />
+                                </div>
+                                <span class="text-muted">Decryption of the fields is through this option so be careful</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
