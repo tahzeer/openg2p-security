@@ -5,13 +5,7 @@ class RegistryConfigDecrypt(models.TransientModel):
 
     _inherit = "res.config.settings"
 
-    decrypt_fields = fields.Boolean("Decrypt Fields", default=False, store=True)
-    # partner_name = fields.Char(
-    #     string="Partner Name",
-    #     related="partner_id.name",
-    #     store=False,
-    #     readonly=True,
-    # )
+    decrypt_fields = fields.Boolean(default=False, store=True)
 
     def set_values(self):
         res = super(RegistryConfigDecrypt, self).set_values()

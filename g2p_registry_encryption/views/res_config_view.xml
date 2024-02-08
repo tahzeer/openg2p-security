@@ -21,7 +21,9 @@
                                 <div>
                                     <label for="decrypt_fields" string="Decrypt fields" />
                                 </div>
-                                <span class="text-muted">Decryption of the fields is through this option so be careful</span>
+                                <span
+                                    class="text-muted"
+                                >Decryption of the fields is through this option so be careful</span>
                             </div>
                         </div>
                     </div>

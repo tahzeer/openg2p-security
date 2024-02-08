@@ -1,4 +1,3 @@
-import requests
 from datetime import datetime
 
 import requests
@@ -141,6 +140,10 @@ class EncryptionModule(object):
         if response:
             response = response.get("data", {})
         return response
+        # response = requests.post(url, json=payload, headers=headers)
+        # print(response.content)
+
+        # return response.json().get("response", {}).get("data", None)
 
     def get_signing_public_key(self):
         url = f"{self.base_url}/getSigningPublicKey"
@@ -349,11 +352,6 @@ class EncryptionModule(object):
 #     "dataToSign": "aGVsbG8gd29ybGQ=",
 #     "certificateUrl": certificate_data,
 # }
-# data_to_encrypt = {
-#     "applicationId": "REGISTRATION",
-#     "referenceId": "",
-#     "data": "c-UgAvGn5o_iAOpSauP29SAlRRbmEEwhl3UkgK3u_0RR4u_ayqcB5aAuaDD5YDonsNxATVvt9UEqbyHtdTEnIb-U3KcdW7DtgvbT_n1yD4oeIvSK6hTx7bCjrlOrs-4JT8VN6J6heS19cuhtV88wj3Hmr0GBGIpfDSHkW4auOfVDiw8dlVUm6YiwhnGBvF4AJ2Nb7h_Hbm0XbO-JRNKHjIjPXqfJ0qjDSW4Si_d89u9iwNGMZy0xCXJbeBaHf6HTY3uQMwC-dqJgbR-W4kjXrsy8jbSa_PXaMOWoQCKf4AOUZZ6L9Bqv_l7HiaHKPdW_RU-e3r48MMtFLLDLnhy5N9CGpploF5JgKe8_Wnok42m-1lTb2HjwjCI2pJcm6WVvI0tFWV9TUExJVFRFUiOMwXdK6x8x6v2DhUcv434Bl-s88jQ1cFPFwQ",
-# }
+
 # decrypted_data = odoo_api.decrypt_data(data_to_encrypt)
 # print("Decrypted Data:", decrypted_data)
-

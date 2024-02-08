@@ -88,38 +88,38 @@
 #         QrcodeFile = self.env["g2p.payment.file.qrcode"]
 #         return QrcodeFile.create(create_vals)
 
-    # @api.model
-    # def _render_data(
-    #     self,
-    #     data_type,
-    #     template_src,
-    #     res_model,
-    #     res_ids,
-    #     key_set,
-    #     template_engine="inline_template",
-    # ):
-    #     RenderMixin = self.env["mail.render.mixin"]
-    #     datas = RenderMixin._render_template(
-    #         template_src,
-    #         res_model,
-    #         res_ids,
-    #         engine=template_engine,
-    #     )
-    #     if data_type == "string":
-    #         pass
-    #     elif data_type == "json":
-    #         for res_id in res_ids:
-    #             # the following should throw exception if not json
-    #             json.loads(datas[res_id])
-    #     elif data_type == "jwt":
-    #         kid = key_set.name
-    #         priv_key = key_set.priv_key.encode()
-    #         for res_id in res_ids:
-    #             payload = json.loads(datas[res_id])
-    #             datas[res_id] = jwt.encode(
-    #                 payload, priv_key, algorithm="RS256", headers={"kid": kid}
-    #             )
-    #     return datas
+# @api.model
+# def _render_data(
+#     self,
+#     data_type,
+#     template_src,
+#     res_model,
+#     res_ids,
+#     key_set,
+#     template_engine="inline_template",
+# ):
+#     RenderMixin = self.env["mail.render.mixin"]
+#     datas = RenderMixin._render_template(
+#         template_src,
+#         res_model,
+#         res_ids,
+#         engine=template_engine,
+#     )
+#     if data_type == "string":
+#         pass
+#     elif data_type == "json":
+#         for res_id in res_ids:
+#             # the following should throw exception if not json
+#             json.loads(datas[res_id])
+#     elif data_type == "jwt":
+#         kid = key_set.name
+#         priv_key = key_set.priv_key.encode()
+#         for res_id in res_ids:
+#             payload = json.loads(datas[res_id])
+#             datas[res_id] = jwt.encode(
+#                 payload, priv_key, algorithm="RS256", headers={"kid": kid}
+#             )
+#     return datas
 
 
 # class G2PPaymentFileQRCode(models.TransientModel):

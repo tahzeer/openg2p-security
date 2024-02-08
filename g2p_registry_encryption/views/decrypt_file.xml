@@ -2,12 +2,13 @@
     <record id="view_encrypted_partner_form" model="ir.ui.view">
         <field name="name">view_individual_registrant_encrypted</field>
         <field name="model">res.partner</field>
-        <field name="groups_id" eval="[(4,ref('g2p_registry_encryption.crypto_admin'))]"/>
-        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form"/>
+        <!-- <field name="groups_id" eval="[(4,ref('g2p_registry_encryption.crypto_admin'))]"/> -->
+        <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
 
         <field name="arch" type="xml">
             <field name="registration_date" position="after">
-                <field name="is_encrypted"/>
+                <field name="is_encrypted" />
+                <!-- <field name="encrypted_val"/> -->
             </field>
         </field>
     </record>
