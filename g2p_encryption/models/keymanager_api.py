@@ -321,37 +321,3 @@ class EncryptionModule(object):
 
         response = requests.post(url, json=payload, headers=headers)
         return response.json()
-
-
-# odoo_token = {
-#     "auth_url": "https://keycloak.dev.openg2p.net/realms/openg2p/protocol/openid-connect/token",
-#     "auth_client_id": "openg2p-admin-client",
-#     "auth_client_secret": "x75SU2hqKQX7IPob",
-#     "auth_grant_type": "client_credentials",
-# }
-
-# odoo_auth = OdooAuth(**odoo_token)
-# access_token = odoo_auth.get_access_token()
-# print(f"Access Token: {access_token}")
-
-# odoo_api = EncryptionModule(
-#     base_url="https://dev.openg2p.net/v1/keymanager",
-#     odoo_auth=odoo_auth,
-# )
-
-# certificate_data = odoo_api.get_certificate(
-#     {
-#         "applicationId": "KERNEL",
-#         "referenceId": "SIGN",
-#     }
-# )
-# print("certificate Data:", certificate_data)
-# data_to_encrypt = {
-#     "applicationId": "KERNEL",
-#     "referenceId": "SIGN",
-#     "dataToSign": "aGVsbG8gd29ybGQ=",
-#     "certificateUrl": certificate_data,
-# }
-
-# decrypted_data = odoo_api.decrypt_data(data_to_encrypt)
-# print("Decrypted Data:", decrypted_data)
