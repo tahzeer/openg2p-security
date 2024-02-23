@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="crypto_admin" model="res.groups">
+        <field name="name">Crypto Admin</field>
+        <field name="category_id" ref="g2p_registry_base.openg2p_module" />
+    </record>
+</odoo>
