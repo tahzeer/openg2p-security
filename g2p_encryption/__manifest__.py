@@ -12,6 +12,7 @@
         "security/groups.xml",
         "security/ir.model.access.csv",
         "views/encryption_provider.xml",
+        "data/default_provider.xml",
     ],
     "assets": {
         "web.assets_backend": [],

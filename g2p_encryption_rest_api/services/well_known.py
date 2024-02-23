@@ -30,8 +30,8 @@ class WellknownRestService(Component):
         encryption_providers = self.env["g2p.encryption.provider"].sudo().search([])
         jwks = []
         for prov in encryption_providers:
-            prov_jwks = prov.get_jwks()
             try:
+                prov_jwks = prov.get_jwks()
                 jwks.extend(prov_jwks.get("keys", []) if prov_jwks else [])
             except Exception as e:
                 _logger.error("Unable to get JWKS from list of encryption providers", e)
