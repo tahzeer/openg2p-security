@@ -9,7 +9,7 @@ class EncryptedPartner(models.Model):
     encrypted_val = fields.Binary("Encrypted value", attachment=False)
     is_encrypted = fields.Boolean(default=False)
 
-    fields_list_to_enc = [
+    fields_list_to_enc = {
         "name",
         "family_name",
         "given_name",
@@ -17,7 +17,7 @@ class EncryptedPartner(models.Model):
         "display_name",
         "address",
         "birth_place",
-    ]
+    }
 
     placeholder_to_encrypted_field = "encrypted"
 
@@ -36,14 +36,17 @@ class EncryptedPartner(models.Model):
         return to_be_enc
 
     def create(self, vals_list):
-        prov = self.env["g2p.encryption.provider"].get_registry_provider()
         is_encrypt_fields = (
             self.env["ir.config_parameter"]
             .sudo()
             .get_param("g2p_registry_encryption.encrypt_registry", default=False)
         )
+        if not is_encrypt_fields:
+            return super().create(vals_list)
+
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
         for vals in vals_list:
-            if is_encrypt_fields and (vals.get("is_registrant", False)):
+            if vals.get("is_registrant", False):
                 to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
                 vals["encrypted_val"] = prov.encrypt_data(
                     json.dumps(to_be_encrypted).encode()
@@ -52,45 +55,72 @@ class EncryptedPartner(models.Model):
 
         return super().create(vals_list)
 
-    def write(self, vals_list):
-        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+    def write(self, vals):
         is_encrypt_fields = (
             self.env["ir.config_parameter"]
             .sudo()
             .get_param("g2p_registry_encryption.encrypt_registry", default=False)
         )
-        rec_values_list = self.read(self.fields_list_to_enc + "is_registrant")
-        for rec, vals in zip(rec_values_list, vals_list):
-            if is_encrypt_fields and (
-                rec.get("is_registrant", False) or vals.get("is_registrant", False)
-            ):
-                vals = rec.update(vals)
+        if not is_encrypt_fields:
+            return super().write(vals)
+
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+        encrypted_vals = self.get_encrypted_val()
+        for rec, (is_encrypted, encrypted_val) in zip(self, encrypted_vals):
+            if rec.is_registrant or vals.get("is_registrant", False):
+                if not is_encrypted:
+                    rec_values_list = rec.read(self.fields_list_to_enc)[0]
+                    rec_values_list.update(vals)
+                    rec_values_list["is_encrypted"] = True
+                    vals = rec_values_list
+                else:
+                    vals = json.loads(prov.decrypt_data(encrypted_val).decode()).update(
+                        vals
+                    )
                 to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
 
                 vals["encrypted_val"] = prov.encrypt_data(
                     json.dumps(to_be_encrypted).encode()
                 )
-                vals["is_encrypted"] = True
 
-        return super().write(vals_list)
+        return super().write(vals)
 
     def _read(self, fields):
+        fields = set(fields)
         res = super()._read(fields)
-        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+        enc_fields_set = self.fields_list_to_enc.intersection(fields)
+        if not enc_fields_set:
+            return res
+        if len(fields) == 2 and "encrypted_val" in fields and "is_encrypted" in fields:
+            return res
+
         is_decrypt_fields = (
             self.env["ir.config_parameter"]
             .sudo()
             .get_param("g2p_registry_encryption.decrypt_registry", default=False)
         )
+        if not is_decrypt_fields:
+            return res
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
         for record in self:
-            if is_decrypt_fields and record.is_encrypted and record.encrypted_val:
-                decrypted_vals = json.loads(
-                    prov.decrypt_data(record.encrypted_val).decode()
-                )
+            is_encrypted, encrypted_val = record.get_encrypted_val()[0]
+            if is_encrypted and encrypted_val:
+                decrypted_vals = json.loads(prov.decrypt_data(encrypted_val).decode())
 
-                for field_name in self.fields_list_to_enc:
-                    if field_name in record and record[field_name]:
+                for field_name in enc_fields_set:
+                    if (
+                        field_name in decrypted_vals
+                        and field_name in record
+                        and record[field_name]
+                    ):
                         self.env.cache.set(
                             record, self._fields[field_name], decrypted_vals[field_name]
                         )
         return res
+
+    def get_encrypted_val(self):
+        ret = self.with_context(bin_size=False).read(["is_encrypted", "encrypted_val"])
+        return [
+            (each.get("is_encrypted", False), each.get("encrypted_val", None))
+            for each in ret
+        ]

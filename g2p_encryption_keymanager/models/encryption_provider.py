@@ -78,7 +78,7 @@ class KeymanagerEncryptionProvider(models.Model):
                 "applicationId": self.keymanager_encrypt_application_id or "",
                 "referenceId": self.keymanager_encrypt_reference_id or "",
                 "timeStamp": current_time,
-                "data": base64.urlsafe_b64encode(data).decode(),
+                "data": self.km_urlsafe_b64encode(data),
                 "salt": self.keymanager_encrypt_salt,
                 "aad": self.keymanager_encrypt_aad,
             },
@@ -91,7 +91,7 @@ class KeymanagerEncryptionProvider(models.Model):
         if response:
             response = response.get("response")
         if response:
-            return base64.urlsafe_b64decode(response.get("data").encode())
+            return self.km_urlsafe_b64decode(response.get("data"))
         raise ValueError("Could not encrypt data, invalid keymanager response")
 
     def decrypt_data(self, data: bytes, **kwargs) -> bytes:
@@ -109,7 +109,7 @@ class KeymanagerEncryptionProvider(models.Model):
                 "applicationId": self.keymanager_encrypt_application_id or "",
                 "referenceId": self.keymanager_encrypt_reference_id or "",
                 "timeStamp": current_time,
-                "data": base64.urlsafe_b64encode(data).decode(),
+                "data": self.km_urlsafe_b64encode(data),
                 "salt": self.keymanager_encrypt_salt,
                 "aad": self.keymanager_encrypt_aad,
             },
@@ -122,7 +122,7 @@ class KeymanagerEncryptionProvider(models.Model):
         if response:
             response = response.get("response")
         if response:
-            return base64.urlsafe_b64decode(response.get("data").encode())
+            return self.km_urlsafe_b64decode(response.get("data"))
         raise ValueError("Could not decrypt data, invalid keymanager response")
 
     def jwt_sign(
@@ -144,9 +144,7 @@ class KeymanagerEncryptionProvider(models.Model):
             "requesttime": current_time,
             "metadata": {},
             "request": {
-                "dataToSign": base64.urlsafe_b64encode(
-                    json.dumps(data).encode()
-                ).decode(),
+                "dataToSign": self.km_urlsafe_b64encode(json.dumps(data).encode()),
                 "applicationId": self.keymanager_sign_application_id or "",
                 "referenceId": self.keymanager_sign_reference_id or "",
                 "includePayload": include_payload,
@@ -257,12 +255,10 @@ class KeymanagerEncryptionProvider(models.Model):
                 "x5c": [
                     base64.b64encode(x509_cert.public_bytes(Encoding.DER)).decode()
                 ],
-                "x5t": base64.urlsafe_b64encode(
-                    x509_cert.fingerprint(hashes.SHA1())
-                ).decode(),
-                "x5t#S256": base64.urlsafe_b64encode(
+                "x5t": self.km_urlsafe_b64encode(x509_cert.fingerprint(hashes.SHA1())),
+                "x5t#S256": self.km_urlsafe_b64encode(
                     x509_cert.fingerprint(hashes.SHA256())
-                ).decode(),
+                ),
             }
         )
         if kid:
@@ -311,3 +307,11 @@ class KeymanagerEncryptionProvider(models.Model):
             }
         )
         return access_token
+
+    @api.model
+    def km_urlsafe_b64encode(self, input: bytes) -> str:
+        return base64.urlsafe_b64encode(input).decode().rstrip("=")
+
+    @api.model
+    def km_urlsafe_b64decode(self, input: str) -> bytes:
+        return base64.urlsafe_b64decode(input.encode() + b"=" * (-len(input) % 4))

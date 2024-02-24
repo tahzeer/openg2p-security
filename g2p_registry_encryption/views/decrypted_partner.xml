@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="g2p_registry_individual.view_individuals_form" />
         <field name="arch" type="xml">
             <field name="registration_date" position="after">
-                <field name="is_encrypted" />
+                <field name="is_encrypted" readonly="True" />
                 <!-- <field name="encrypted_val"/> -->
             </field>
         </field>

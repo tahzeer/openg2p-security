@@ -23,4 +23,4 @@ class RegistryEncryptionProvider(models.Model):
             .sudo()
             .get_param("g2p_registry_encryption.encryption_provider_id", None)
         )
-        return self.browse(prov_id) if prov_id else None
+        return self.browse(int(prov_id)) if prov_id else None
