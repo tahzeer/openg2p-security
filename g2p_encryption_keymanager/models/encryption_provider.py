@@ -9,7 +9,7 @@ import requests
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import Encoding
-from jose import jwt
+from jose import jwt  # pylint: disable=[W7936]
 from jwcrypto import jwk
 
 from odoo import api, fields, models
@@ -309,9 +309,11 @@ class KeymanagerEncryptionProvider(models.Model):
         return access_token
 
     @api.model
-    def km_urlsafe_b64encode(self, input: bytes) -> str:
-        return base64.urlsafe_b64encode(input).decode().rstrip("=")
+    def km_urlsafe_b64encode(self, input_data: bytes) -> str:
+        return base64.urlsafe_b64encode(input_data).decode().rstrip("=")
 
     @api.model
-    def km_urlsafe_b64decode(self, input: str) -> bytes:
-        return base64.urlsafe_b64decode(input.encode() + b"=" * (-len(input) % 4))
+    def km_urlsafe_b64decode(self, input_data: str) -> bytes:
+        return base64.urlsafe_b64decode(
+            input_data.encode() + b"=" * (-len(input_data) % 4)
+        )

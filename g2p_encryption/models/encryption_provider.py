@@ -24,8 +24,8 @@ class G2PEncryptionProvider(models.Model):
         self,
         data: dict,
         include_payload=True,
-        include_certificate=True,
-        include_cert_hash=True,
+        include_certificate=False,
+        include_cert_hash=False,
         **kwargs
     ) -> str:
         raise NotImplementedError()
