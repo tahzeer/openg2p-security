@@ -1,1 +1,3 @@
-from . import partner, phone_number, reg_ids, registry_config
+from . import encryption_provider
+from . import partner
+from . import res_config_settings

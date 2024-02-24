@@ -21,8 +21,10 @@ Part of OpenG2P. See LICENSE file for full copyright and licensing details.
         <field name="priority">1</field>
         <field name="arch" type="xml">
             <form string="Encryption Provider">
-                <field name="name" />
-                <field name="type" required="True" />
+                <group name="Base" string="Base">
+                    <field name="name" />
+                    <field name="type" required="True" />
+                </group>
             </form>
         </field>
     </record>

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class G2PEncryptionProvider(models.Model):
@@ -6,22 +6,31 @@ class G2PEncryptionProvider(models.Model):
     _description = "G2P Encryption Provider"
 
     name = fields.Char(required=True)
-    type = fields.Selection(selection="_selection_provider_type")
+    type = fields.Selection(selection=[])
 
-    @api.model
-    def _selection_provider_type(self):
-        return []
-
-    def encrypt_data(self, data, **kwargs):
+    def encrypt_data(self, data: bytes, **kwargs) -> bytes:
+        """
+        Both input and output are NOT base64 encoded
+        """
         raise NotImplementedError()
 
-    def decrypt_data(self, data, **kwargs):
+    def decrypt_data(self, data: bytes, **kwargs) -> bytes:
+        """
+        Both input and output are NOT base64 encoded
+        """
         raise NotImplementedError()
 
-    def sign_jwt(self, data, **kwargs):
+    def jwt_sign(
+        self,
+        data: dict,
+        include_payload=True,
+        include_certificate=True,
+        include_cert_hash=True,
+        **kwargs
+    ) -> str:
         raise NotImplementedError()
 
-    def verifiy_jwt(self, data, **kwargs):
+    def jwt_verify(self, data: str, **kwargs) -> dict:
         raise NotImplementedError()
 
     def get_jwks(self, **kwargs):
