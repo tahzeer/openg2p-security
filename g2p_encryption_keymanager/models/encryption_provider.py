@@ -127,13 +127,18 @@ class KeymanagerEncryptionProvider(models.Model):
 
     def jwt_sign(
         self,
-        data: dict,
+        data,
         include_payload=True,
         include_certificate=False,
         include_cert_hash=False,
         **kwargs,
     ) -> str:
         self.ensure_one()
+        if isinstance(data, dict):
+            data = json.dumps(data).encode()
+        elif isinstance(data, str):
+            data = data.encode()
+
         access_token = self.km_get_access_token()
         current_time = self.km_generate_current_time()
         url = f"{self.keymanager_api_base_url}/jwtSign"
@@ -144,7 +149,7 @@ class KeymanagerEncryptionProvider(models.Model):
             "requesttime": current_time,
             "metadata": {},
             "request": {
-                "dataToSign": self.km_urlsafe_b64encode(json.dumps(data).encode()),
+                "dataToSign": self.km_urlsafe_b64encode(data),
                 "applicationId": self.keymanager_sign_application_id or "",
                 "referenceId": self.keymanager_sign_reference_id or "",
                 "includePayload": include_payload,
@@ -163,7 +168,7 @@ class KeymanagerEncryptionProvider(models.Model):
             return response.get("jwtSignedData")
         raise ValueError("Could not sign jwt, invalid keymanager response")
 
-    def jwt_verify(self, data: str, **kwargs) -> dict:
+    def jwt_verify(self, data: str, **kwargs):
         self.ensure_one()
         access_token = self.km_get_access_token()
         current_time = self.km_generate_current_time()
@@ -193,18 +198,7 @@ class KeymanagerEncryptionProvider(models.Model):
         else:
             raise ValueError("Could not verify jwt, invalid keymanager response")
         if response:
-            return jwt.decode(
-                data,
-                None,
-                options={
-                    "verify_signature": False,
-                    "verify_exp": False,
-                    "verify_nbf": False,
-                    "verify_iss": False,
-                    "verify_aud": False,
-                    "verify_at_hash": False,
-                },
-            )
+            return jwt.get_unverified_claims(data)
         raise ValueError("invalid jwt signature")
 
     def get_jwks(self, **kwargs):
@@ -221,7 +215,7 @@ class KeymanagerEncryptionProvider(models.Model):
             (
                 self.keymanager_sign_application_id or "",
                 self.keymanager_sign_reference_id or "",
-                "sign",
+                "sig",
             ),
         ):
             url = f"{self.keymanager_api_base_url}/getAllCertificates"
@@ -284,18 +278,7 @@ class KeymanagerEncryptionProvider(models.Model):
         _logger.debug("Keymanager get Certificates API response: %s", response.text)
         response.raise_for_status()
         access_token = response.json().get("access_token", None)
-        token_exp = jwt.decode(
-            access_token,
-            None,
-            options={
-                "verify_signature": False,
-                "verify_exp": False,
-                "verify_nbf": False,
-                "verify_iss": False,
-                "verify_aud": False,
-                "verify_at_hash": False,
-            },
-        ).get("exp")
+        token_exp = jwt.get_unverified_claims(access_token).get("exp")
         self.write(
             {
                 "keymanager_access_token": access_token,

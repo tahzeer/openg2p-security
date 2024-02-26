@@ -22,7 +22,7 @@ class G2PEncryptionProvider(models.Model):
 
     def jwt_sign(
         self,
-        data: dict,
+        data,
         include_payload=True,
         include_certificate=False,
         include_cert_hash=False,
@@ -30,7 +30,7 @@ class G2PEncryptionProvider(models.Model):
     ) -> str:
         raise NotImplementedError()
 
-    def jwt_verify(self, data: str, **kwargs) -> dict:
+    def jwt_verify(self, data: str, **kwargs):
         raise NotImplementedError()
 
     def get_jwks(self, **kwargs):
