@@ -63,7 +63,7 @@ class KeymanagerEncryptionProvider(models.Model):
     keymanager_encrypt_salt = fields.Char(default=_km_random_secret)
     keymanager_encrypt_aad = fields.Char(default=_km_random_secret)
 
-    def encrypt_data(self, data: bytes, **kwargs) -> bytes:
+    def encrypt_data_keymanager(self, data: bytes, **kwargs) -> bytes:
         self.ensure_one()
         access_token = self.km_get_access_token()
         current_time = self.km_generate_current_time()
@@ -94,7 +94,7 @@ class KeymanagerEncryptionProvider(models.Model):
             return self.km_urlsafe_b64decode(response.get("data"))
         raise ValueError("Could not encrypt data, invalid keymanager response")
 
-    def decrypt_data(self, data: bytes, **kwargs) -> bytes:
+    def decrypt_data_keymanager(self, data: bytes, **kwargs) -> bytes:
         self.ensure_one()
         access_token = self.km_get_access_token()
         current_time = self.km_generate_current_time()
@@ -125,7 +125,7 @@ class KeymanagerEncryptionProvider(models.Model):
             return self.km_urlsafe_b64decode(response.get("data"))
         raise ValueError("Could not decrypt data, invalid keymanager response")
 
-    def jwt_sign(
+    def jwt_sign_keymanager(
         self,
         data,
         include_payload=True,
@@ -168,7 +168,7 @@ class KeymanagerEncryptionProvider(models.Model):
             return response.get("jwtSignedData")
         raise ValueError("Could not sign jwt, invalid keymanager response")
 
-    def jwt_verify(self, data: str, **kwargs):
+    def jwt_verify_keymanager(self, data: str, **kwargs):
         self.ensure_one()
         access_token = self.km_get_access_token()
         current_time = self.km_generate_current_time()
@@ -201,7 +201,7 @@ class KeymanagerEncryptionProvider(models.Model):
             return jwt.get_unverified_claims(data)
         raise ValueError("invalid jwt signature")
 
-    def get_jwks(self, **kwargs):
+    def get_jwks_keymanager(self, **kwargs):
         # TODO: Cache this JWKS response somehow
         self.ensure_one()
         access_token = self.km_get_access_token()
