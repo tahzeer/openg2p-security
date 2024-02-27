@@ -17,8 +17,8 @@ Part of OpenG2P. See LICENSE file for full copyright and licensing details.
                 >
                     <field name="keymanager_api_base_url" required="True" />
                     <field name="keymanager_auth_url" required="True" />
-                    <field name="keymanager_auth_client_id" required="True" password="True" />
-                    <field name="keymanager_auth_client_secret" required="True" />
+                    <field name="keymanager_auth_client_id" required="True" />
+                    <field name="keymanager_auth_client_secret" required="True" password="True" />
                     <field name="keymanager_auth_grant_type" required="True" />
                 </group>
                 <group
