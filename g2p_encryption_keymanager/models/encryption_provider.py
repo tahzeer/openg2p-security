@@ -1,3 +1,5 @@
+# pylint: disable=[W7936]
+
 import base64
 import json
 import logging
@@ -9,7 +11,7 @@ import requests
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import Encoding
-from jose import jwt  # pylint: disable=[W7936]
+from jose import jwt
 from jwcrypto import jwk
 
 from odoo import api, fields, models

@@ -10,7 +10,7 @@
     "depends": [
         "g2p_encryption",
     ],
-    "external_dependencies": {"python": ["cryptography", "jwcrypto", "python-jose"]},
+    "external_dependencies": {"python": ["cryptography<37", "jwcrypto", "python-jose"]},
     "data": [
         "views/encryption_provider.xml",
         "data/default_provider.xml",
