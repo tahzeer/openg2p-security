@@ -1,5 +1,5 @@
 {
-    "name": "G2P Registry: Encryption",
+    "name": "G2P Encryption: Keymanager",
     "category": "G2P",
     "version": "15.0.1.2.0",
     "sequence": 1,
@@ -7,11 +7,13 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_encryption", "g2p_registry_base", "g2p_registry_individual"],
+    "depends": [
+        "g2p_encryption",
+    ],
+    "external_dependencies": {"python": ["cryptography<37", "jwcrypto", "python-jose"]},
     "data": [
-        "data/registry_encryption_provider.xml",
-        "views/decrypted_partner.xml",
-        "views/res_config_view.xml",
+        "views/encryption_provider.xml",
+        "data/default_provider.xml",
     ],
     "assets": {
         "web.assets_backend": [],

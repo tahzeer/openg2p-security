@@ -1,5 +1,5 @@
 {
-    "name": "G2P: Encryption",
+    "name": "G2P Encryption: Base",
     "category": "G2P",
     "version": "15.0.1.2.0",
     "sequence": 1,
@@ -8,8 +8,12 @@
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
     "depends": [],
-    "external_dependencies": {"python": ["pycrypto"]},
-    "data": [],
+    "data": [
+        "security/groups.xml",
+        "security/ir.model.access.csv",
+        "views/encryption_provider.xml",
+        "data/default_provider.xml",
+    ],
     "assets": {
         "web.assets_backend": [],
         "web.assets_qweb": [],

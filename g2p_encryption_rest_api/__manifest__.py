@@ -1,5 +1,5 @@
 {
-    "name": "G2P Registry: Encryption",
+    "name": "G2P Encryption: Rest API",
     "category": "G2P",
     "version": "15.0.1.2.0",
     "sequence": 1,
@@ -7,12 +7,8 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["g2p_encryption", "g2p_registry_base", "g2p_registry_individual"],
-    "data": [
-        "data/registry_encryption_provider.xml",
-        "views/decrypted_partner.xml",
-        "views/res_config_view.xml",
-    ],
+    "depends": ["g2p_encryption", "base_rest"],
+    "data": [],
     "assets": {
         "web.assets_backend": [],
         "web.assets_qweb": [],

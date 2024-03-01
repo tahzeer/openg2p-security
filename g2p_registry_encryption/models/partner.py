@@ -1,125 +1,126 @@
-import logging
+import json
 
 from odoo import api, fields, models
-
-from odoo.addons.g2p_encryption.models.crypto import AESCipher
-
-_logger = logging.getLogger(__name__)
 
 
 class EncryptedPartner(models.Model):
     _inherit = "res.partner"
 
-    # is_encrypted = fields.Boolean("Is encrypted?")
+    encrypted_val = fields.Binary("Encrypted value", attachment=False)
+    is_encrypted = fields.Boolean(default=False)
 
-    name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("name", "name_decrypted"), store=False
-    )
-    family_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field(
-            "family_name", "family_name_decrypted"
-        ),
-        store=False,
-    )
-    given_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("given_name", "given_name_decrypted"),
-        store=False,
-    )
-    addl_name_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("addl_name", "addl_name_decrypted"),
-        store=False,
-    )
-    email_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("email", "email_decrypted"),
-        store=False,
-    )
-    phone_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("phone", "phone_decrypted"),
-        store=False,
-    )
-    mobile_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("mobile", "mobile_decrypted"),
-        store=False,
-    )
-    address_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field("address", "address_decrypted"),
-        store=False,
-    )
-    birth_place_decrypted = fields.Char(
-        compute=lambda self: self._decrypt_field(
-            "birth_place", "birth_place_decrypted"
-        ),
-        store=False,
-    )
+    fields_list_to_enc = {
+        "name",
+        "family_name",
+        "given_name",
+        "addl_name",
+        "display_name",
+        "address",
+        "birth_place",
+    }
+
+    placeholder_to_encrypted_field = "encrypted"
 
     @api.model
-    def create(self, vals):
-        record = super(EncryptedPartner, self).create(vals)
-        # TODO encryption key should be moved to a secret vault.
-        encryption_key = self.env["ir.config_parameter"].get_param("g2p_enc_key", "")
-        if encryption_key:
-            crypto = AESCipher(encryption_key)
-            record["name"] = crypto.encrypt(record["name"]) if record["name"] else None
-            record["family_name"] = (
-                crypto.encrypt(record["family_name"]) if record["family_name"] else None
-            )
-            record["given_name"] = (
-                crypto.encrypt(record["given_name"]) if record["given_name"] else None
-            )
-            record["addl_name"] = (
-                crypto.encrypt(record["addl_name"]) if record["addl_name"] else None
-            )
-            record["display_name"] = (
-                crypto.encrypt(record["display_name"])
-                if record["display_name"]
-                else None
-            )
-            record["email"] = (
-                crypto.encrypt(record["email"]) if record["email"] else None
-            )
-            record["phone"] = (
-                crypto.encrypt(record["phone"]) if record["phone"] else None
-            )
-            record["mobile"] = (
-                crypto.encrypt(record["mobile"]) if record["mobile"] else None
-            )
-            record["address"] = (
-                crypto.encrypt(record["address"]) if record["address"] else None
-            )
-            record["birth_place"] = (
-                crypto.encrypt(record["birth_place"]) if record["birth_place"] else None
-            )
+    def gather_fields_to_be_enc_from_dict(
+        self,
+        fields_dict: dict,
+        replace=True,
+    ):
+        to_be_enc = {}
+        for each in self.fields_list_to_enc:
+            if fields_dict.get(each, None):
+                to_be_enc[each] = fields_dict[each]
+                if replace:
+                    fields_dict[each] = self.placeholder_to_encrypted_field
+        return to_be_enc
 
-        return record
+    def create(self, vals_list):
+        is_encrypt_fields = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("g2p_registry_encryption.encrypt_registry", default=False)
+        )
+        if not is_encrypt_fields:
+            return super().create(vals_list)
 
-    # @api.model
-    # def write(self, vals):
-    #     record = super(EncryptedPartner, self).create(vals)
-    #     #TODO encryption key should be moved to a secret vault.
-    #     encryption_key = self.env['ir.config_parameter'].get_param('g2p_enc_key', '')
-    #     if encryption_key:
-    #         crypto = AESCipher(encryption_key)
-    #         record["name"] = crypto.encrypt(record["name"]) if record["name"] else None
-    #         record["family_name"] = crypto.encrypt(record["family_name"]) if record["family_name"] else None
-    #         record["given_name"] = crypto.encrypt(record["given_name"]) if record["given_name"] else None
-    #         record["addl_name"] = crypto.encrypt(record["addl_name"]) if record["addl_name"] else None
-    #         record["display_name"] = crypto.encrypt(record["display_name"]) if record["display_name"] else None
-    #         record["email"] = crypto.encrypt(record["email"]) if record["email"] else None
-    #         record["phone"] = crypto.encrypt(record["phone"]) if record["phone"] else None
-    #         record["mobile"] = crypto.encrypt(record["mobile"]) if record["mobile"] else None
-    #         record["address"] = crypto.encrypt(record["address"]) if record["address"] else None
-    #         record["birth_place"] = crypto.encrypt(record["birth_place"]) if record["birth_place"] else None
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+        for vals in vals_list:
+            if vals.get("is_registrant", False):
+                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
+                vals["encrypted_val"] = prov.encrypt_data(
+                    json.dumps(to_be_encrypted).encode()
+                )
+                vals["is_encrypted"] = True
 
-    #     return record
+        return super().create(vals_list)
 
-    def _decrypt_field(self, actual_field, decrypted_field):
-        # TODO encryption key should be moved to a secret vault.
-        encryption_key = self.env["ir.config_parameter"].get_param("g2p_enc_key", "")
-        if encryption_key:
-            crypto = AESCipher(encryption_key)
-            for rec in self:
-                if rec[actual_field]:
-                    rec[decrypted_field] = crypto.decrypt(rec[actual_field])
+    def write(self, vals):
+        is_encrypt_fields = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("g2p_registry_encryption.encrypt_registry", default=False)
+        )
+        if not is_encrypt_fields:
+            return super().write(vals)
+
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+        encrypted_vals = self.get_encrypted_val()
+        for rec, (is_encrypted, encrypted_val) in zip(self, encrypted_vals):
+            if rec.is_registrant or vals.get("is_registrant", False):
+                if not is_encrypted:
+                    rec_values_list = rec.read(self.fields_list_to_enc)[0]
+                    rec_values_list.update(vals)
+                    rec_values_list["is_encrypted"] = True
+                    vals = rec_values_list
                 else:
-                    rec[decrypted_field] = ""
-                _logger.info("%s , %s", decrypted_field, rec[decrypted_field])
+                    vals = json.loads(prov.decrypt_data(encrypted_val).decode()).update(
+                        vals
+                    )
+                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
+
+                vals["encrypted_val"] = prov.encrypt_data(
+                    json.dumps(to_be_encrypted).encode()
+                )
+
+        return super().write(vals)
+
+    def _read(self, fields):
+        fields = set(fields)
+        res = super()._read(fields)
+        enc_fields_set = self.fields_list_to_enc.intersection(fields)
+        if not enc_fields_set:
+            return res
+        if len(fields) == 2 and "encrypted_val" in fields and "is_encrypted" in fields:
+            return res
+
+        is_decrypt_fields = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("g2p_registry_encryption.decrypt_registry", default=False)
+        )
+        if not is_decrypt_fields:
+            return res
+        prov = self.env["g2p.encryption.provider"].get_registry_provider()
+        for record in self:
+            is_encrypted, encrypted_val = record.get_encrypted_val()[0]
+            if is_encrypted and encrypted_val:
+                decrypted_vals = json.loads(prov.decrypt_data(encrypted_val).decode())
+
+                for field_name in enc_fields_set:
+                    if (
+                        field_name in decrypted_vals
+                        and field_name in record
+                        and record[field_name]
+                    ):
+                        self.env.cache.set(
+                            record, self._fields[field_name], decrypted_vals[field_name]
+                        )
+        return res
+
+    def get_encrypted_val(self):
+        ret = self.with_context(bin_size=False).read(["is_encrypted", "encrypted_val"])
+        return [
+            (each.get("is_encrypted", False), each.get("encrypted_val", None))
+            for each in ret
+        ]
