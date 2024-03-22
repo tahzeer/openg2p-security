@@ -47,20 +47,34 @@ class KeymanagerEncryptionProvider(models.Model):
     def km_generate_current_time(self):
         return f'{datetime.utcnow().isoformat(timespec = "milliseconds")}Z'
 
-    keymanager_api_base_url = fields.Char(default=KEYMANAGER_API_BASE_URL)
-    keymanager_auth_url = fields.Char(default=KEYMANAGER_AUTH_URL)
-    keymanager_auth_client_id = fields.Char(default=KEYMANAGER_AUTH_CLIENT_ID)
+    keymanager_api_base_url = fields.Char(
+        "Keymanager API Base URL", default=KEYMANAGER_API_BASE_URL
+    )
+    keymanager_auth_url = fields.Char(
+        "Keymanager Auth URL", default=KEYMANAGER_AUTH_URL
+    )
+    keymanager_auth_client_id = fields.Char(
+        "Keymanager Auth Client ID", default=KEYMANAGER_AUTH_CLIENT_ID
+    )
     keymanager_auth_client_secret = fields.Char(default=KEYMANAGER_AUTH_CLIENT_SECRET)
     keymanager_auth_grant_type = fields.Char(default=KEYMANAGER_AUTH_GRANT_TYPE)
 
     keymanager_access_token = fields.Char()
     keymanager_access_token_expiry = fields.Datetime()
 
-    keymanager_encrypt_application_id = fields.Char(default="REGISTRATION")
-    keymanager_encrypt_reference_id = fields.Char(default="ENCRYPT")
+    keymanager_encrypt_application_id = fields.Char(
+        "Keymanager Encrypt Application ID", default="REGISTRATION"
+    )
+    keymanager_encrypt_reference_id = fields.Char(
+        "Keymanager Encrypt Reference ID", default="ENCRYPT"
+    )
 
-    keymanager_sign_application_id = fields.Char(default="REGISTRATION")
-    keymanager_sign_reference_id = fields.Char(default="")
+    keymanager_sign_application_id = fields.Char(
+        "Keymanager Sign Application ID", default="ID_REPO"
+    )
+    keymanager_sign_reference_id = fields.Char(
+        "Keymanager Sign Reference ID", default=""
+    )
 
     keymanager_encrypt_salt = fields.Char(default=_km_random_secret)
     keymanager_encrypt_aad = fields.Char(default=_km_random_secret)

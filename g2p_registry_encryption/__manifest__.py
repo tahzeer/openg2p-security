@@ -11,6 +11,7 @@
     "data": [
         "data/registry_encryption_provider.xml",
         "views/decrypted_partner.xml",
+        "views/encryption_provider.xml",
         "views/res_config_view.xml",
     ],
     "assets": {
