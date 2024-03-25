@@ -18,9 +18,7 @@ class RegistryEncryptionProvider(models.Model):
         ]""",
     )
 
-    registry_enc_field_placeholder = fields.Char(
-        "Registry Encrypted Field Placeholder", default="encrypted"
-    )
+    registry_enc_field_placeholder = fields.Char("Registry Encrypted Field Placeholder", default="encrypted")
 
     def get_registry_fields_set_to_enc(self):
         self.ensure_one()
@@ -45,4 +43,4 @@ class RegistryEncryptionProvider(models.Model):
             .sudo()
             .get_param("g2p_registry_encryption.encryption_provider_id", None)
         )
-        return self.browse(int(prov_id)) if prov_id else None
+        return self.sudo().browse(int(prov_id)) if prov_id else None

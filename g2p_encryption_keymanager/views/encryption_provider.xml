@@ -15,11 +15,22 @@ Part of OpenG2P. See LICENSE file for full copyright and licensing details.
                     string="Keymanager Settings"
                     attrs="{'invisible':[('type','!=','keymanager')]}"
                 >
-                    <field name="keymanager_api_base_url" required="True" />
-                    <field name="keymanager_auth_url" required="True" />
-                    <field name="keymanager_auth_client_id" required="True" />
-                    <field name="keymanager_auth_client_secret" required="True" password="True" />
-                    <field name="keymanager_auth_grant_type" required="True" />
+                    <field name="keymanager_api_base_url" attrs="{'required':[('type','=','keymanager')]}" />
+                    <field name="keymanager_api_timeout" />
+                    <field name="keymanager_auth_url" attrs="{'required':[('type','=','keymanager')]}" />
+                    <field
+                        name="keymanager_auth_client_id"
+                        attrs="{'required':[('type','=','keymanager')]}"
+                    />
+                    <field
+                        name="keymanager_auth_client_secret"
+                        attrs="{'required':[('type','=','keymanager')]}"
+                        password="True"
+                    />
+                    <field
+                        name="keymanager_auth_grant_type"
+                        attrs="{'required':[('type','=','keymanager')]}"
+                    />
                 </group>
                 <group
                     name="Keymanager Additional Settings"

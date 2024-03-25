@@ -8,11 +8,7 @@ class RegistryEncryptConfigSettings(models.TransientModel):
         "g2p.encryption.provider",
         config_parameter="g2p_registry_encryption.encryption_provider_id",
     )
-    encrypt_registry = fields.Boolean(
-        config_parameter="g2p_registry_encryption.encrypt_registry"
-    )
+    encrypt_registry = fields.Boolean(config_parameter="g2p_registry_encryption.encrypt_registry")
 
     # TODO: Change this to user context
-    decrypt_registry = fields.Boolean(
-        config_parameter="g2p_registry_encryption.decrypt_registry"
-    )
+    decrypt_registry = fields.Boolean(config_parameter="g2p_registry_encryption.decrypt_registry")

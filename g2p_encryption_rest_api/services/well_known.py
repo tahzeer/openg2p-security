@@ -34,7 +34,5 @@ class WellknownRestService(Component):
                 prov_jwks = prov.get_jwks()
                 jwks.extend(prov_jwks.get("keys", []) if prov_jwks else [])
             except Exception:
-                _logger.exception(
-                    "Unable to get JWKS from list of encryption providers"
-                )
+                _logger.exception("Unable to get JWKS from list of encryption providers")
         return {"keys": jwks}
