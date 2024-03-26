@@ -6,48 +6,28 @@
         <field name="priority" eval="1010" />
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='g2p_config_settings']" position="inside">
-                <h2>G2P Registry Encryption Settings</h2>
-                <div class="row mt16 o_settings_container" name="encryption_settings_container">
-                    <div
-                        class="col-12 col-lg-6 o_setting_box"
-                        id="registry_encryption_provider_config"
-                        title="Registry Encryption Provider Config"
+            <app name="g2p_config_settings" position="inside">
+                <block name="encryption_settings_container" title="G2P Registry Encryption Settings">
+                    <setting
+                        string="Registry Encryption Provider Config"
+                        help="Select the encryption provider to encrypt the registry"
                     >
-                        <div class="o_setting_right_pane">
-                            <label
-                                for="registry_encryption_provider"
-                                string="Encryption Provider for Registry"
-                            />
-                            <field name="registry_encryption_provider" />
-                        </div>
-                    </div>
-                    <div
-                        class="col-12 col-lg-6 o_setting_box"
-                        id="encrypt_registry_config"
-                        title="Encrypt Registry Config"
+                        <field name="registry_encryption_provider" />
+                    </setting>
+                    <setting
+                        string="Encrypt Registry Config"
+                        help="This option enables registry fields encrpytion"
                     >
-                        <div class="o_setting_right_pane">
-                            <field name="encrypt_registry" />
-                            <label for="encrypt_registry" string="Encrypt Registry fields" />
-                            <span class="text-muted">This option enables registry fields encryption</span>
-                        </div>
-                    </div>
-                    <div
-                        class="col-12 col-lg-6 o_setting_box"
-                        id="decrypt_registry_config"
-                        title="Decrypt Registry Config"
+                        <field name="encrypt_registry" />
+                    </setting>
+                    <setting
+                        string="Decrypt Registry Config"
+                        help="By choosing this, you are consenting to decrypting fields on registry. So be careful"
                     >
-                        <div class="o_setting_right_pane">
-                            <field name="decrypt_registry" />
-                            <label for="decrypt_registry" string="Decrypt Registry fields" />
-                            <span
-                                class="text-muted"
-                            >By choosing this, you are consenting to decrypting fields on registry. So be careful</span>
-                        </div>
-                    </div>
-                </div>
-            </xpath>
+                        <field name="decrypt_registry" />
+                    </setting>
+                </block>
+            </app>
         </field>
     </record>
 </odoo>

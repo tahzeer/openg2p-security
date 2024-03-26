@@ -68,9 +68,9 @@ class EncryptedPartner(models.Model):
 
         return super().write(vals)
 
-    def _read(self, fields):
+    def _fetch_query(self, query, fields):
         fields = set(fields)
-        res = super()._read(fields)
+        res = super()._fetch_query(query, fields)
         prov = self.env["g2p.encryption.provider"].get_registry_provider()
         enc_fields_set = prov.get_registry_fields_set_to_enc().intersection(fields)
         if not enc_fields_set:

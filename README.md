@@ -1,8 +1,8 @@
 
 <!-- /!\ Non OCA Context : Set here the badge of your runbot / runboat instance. -->
-[![Pre-commit Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml/badge.svg?branch=15.0-develop)](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml?query=branch%3A15.0-develop)
-[![Build Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml/badge.svg?branch=15.0-develop)](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml?query=branch%3A15.0-develop)
-[![codecov](https://codecov.io/gh/OpenG2P/openg2p-security/branch/15.0-develop/graph/badge.svg)](https://codecov.io/gh/OpenG2P/openg2p-security)
+[![Pre-commit Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml/badge.svg?branch=17.0-develop)](https://github.com/OpenG2P/openg2p-security/actions/workflows/pre-commit.yml?query=branch%3A17.0-develop)
+[![Build Status](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml/badge.svg?branch=17.0-develop)](https://github.com/OpenG2P/openg2p-security/actions/workflows/test.yml?query=branch%3A17.0-develop)
+[![codecov](https://codecov.io/gh/OpenG2P/openg2p-security/branch/17.0-develop/graph/badge.svg)](https://codecov.io/gh/OpenG2P/openg2p-security)
 <!-- /!\ Non OCA Context : Set here the badge of your translation instance. -->
 
 <!-- /!\ do not modify above this line -->
@@ -22,10 +22,10 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[g2p_encryption](g2p_encryption/) | 15.0.1.2.0 |  | G2P Encryption: Base
-[g2p_encryption_keymanager](g2p_encryption_keymanager/) | 15.0.1.2.0 |  | G2P Encryption: Keymanager
-[g2p_encryption_rest_api](g2p_encryption_rest_api/) | 15.0.1.2.0 |  | G2P Encryption: Rest API
-[g2p_registry_encryption](g2p_registry_encryption/) | 15.0.1.2.0 |  | G2P Registry: Encryption
+[g2p_encryption](g2p_encryption/) | 17.0.1.2.0 |  | G2P Encryption: Base
+[g2p_encryption_keymanager](g2p_encryption_keymanager/) | 17.0.1.2.0 |  | G2P Encryption: Keymanager
+[g2p_encryption_rest_api](g2p_encryption_rest_api/) | 17.0.1.2.0 |  | G2P Encryption: Rest API
+[g2p_registry_encryption](g2p_registry_encryption/) | 17.0.1.2.0 |  | G2P Registry: Encryption
 
 [//]: # (end addons)
 
