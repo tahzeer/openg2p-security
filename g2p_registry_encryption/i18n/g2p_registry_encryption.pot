@@ -95,6 +95,11 @@ msgid "Is Encrypted"
 msgstr ""
 
 #. module: g2p_registry_encryption
+#: model:ir.model.fields,field_description:g2p_registry_encryption.field_g2p_encryption_provider__registry_enc_field_placeholder
+msgid "Registry Encrypted Field Placeholder"
+msgstr ""
+
+#. module: g2p_registry_encryption
 #: model:ir.model.fields,field_description:g2p_registry_encryption.field_res_config_settings__registry_encryption_provider
 msgid "Registry Encryption Provider"
 msgstr ""
@@ -102,4 +107,14 @@ msgstr ""
 #. module: g2p_registry_encryption
 #: model_terms:ir.ui.view,arch_db:g2p_registry_encryption.openg2p_inherit_res_config_settings_view_form
 msgid "Registry Encryption Provider Config"
+msgstr ""
+
+#. module: g2p_registry_encryption
+#: model:ir.model.fields,field_description:g2p_registry_encryption.field_g2p_encryption_provider__registry_fields_to_enc
+msgid "Registry Fields to Encrypt"
+msgstr ""
+
+#. module: g2p_registry_encryption
+#: model_terms:ir.ui.view,arch_db:g2p_registry_encryption.view_registry_encryption_provider_form
+msgid "Registry Settings"
 msgstr ""
