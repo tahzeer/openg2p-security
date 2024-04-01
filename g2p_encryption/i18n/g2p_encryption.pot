@@ -34,6 +34,11 @@ msgid "Crypto Admin"
 msgstr ""
 
 #. module: g2p_encryption
+#: model:res.groups,name:g2p_encryption.crypto_dummy
+msgid "Crypto Dummy"
+msgstr ""
+
+#. module: g2p_encryption
 #: model:ir.model.fields,field_description:g2p_encryption.field_g2p_encryption_provider__display_name
 msgid "Display Name"
 msgstr ""
@@ -85,6 +90,16 @@ msgid "Name"
 msgstr ""
 
 #. module: g2p_encryption
+#: model:ir.module.category,name:g2p_encryption.security_module
+msgid "OpenG2P Security Module"
+msgstr ""
+
+#. module: g2p_encryption
 #: model:ir.model.fields,field_description:g2p_encryption.field_g2p_encryption_provider__type
 msgid "Type"
+msgstr ""
+
+#. module: g2p_encryption
+#: model:ir.module.category,description:g2p_encryption.security_module
+msgid "User access level for the openg2p security modules"
 msgstr ""
