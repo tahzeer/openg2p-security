@@ -24,6 +24,16 @@ msgid "Keymanager"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
+#: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_api_base_url
+msgid "Keymanager API Base URL"
+msgstr ""
+
+#. module: g2p_encryption_keymanager
+#: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_api_timeout
+msgid "Keymanager API Timeout"
+msgstr ""
+
+#. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_access_token
 msgid "Keymanager Access Token"
 msgstr ""
@@ -39,13 +49,8 @@ msgid "Keymanager Additional Settings"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
-#: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_api_base_url
-msgid "Keymanager Api Base Url"
-msgstr ""
-
-#. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_auth_client_id
-msgid "Keymanager Auth Client"
+msgid "Keymanager Auth Client ID"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
@@ -60,7 +65,7 @@ msgstr ""
 
 #. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_auth_url
-msgid "Keymanager Auth Url"
+msgid "Keymanager Auth URL"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
@@ -70,12 +75,12 @@ msgstr ""
 
 #. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_encrypt_application_id
-msgid "Keymanager Encrypt Application"
+msgid "Keymanager Encrypt Application ID"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_encrypt_reference_id
-msgid "Keymanager Encrypt Reference"
+msgid "Keymanager Encrypt Reference ID"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
@@ -90,12 +95,12 @@ msgstr ""
 
 #. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_sign_application_id
-msgid "Keymanager Sign Application"
+msgid "Keymanager Sign Application ID"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
 #: model:ir.model.fields,field_description:g2p_encryption_keymanager.field_g2p_encryption_provider__keymanager_sign_reference_id
-msgid "Keymanager Sign Reference"
+msgid "Keymanager Sign Reference ID"
 msgstr ""
 
 #. module: g2p_encryption_keymanager
