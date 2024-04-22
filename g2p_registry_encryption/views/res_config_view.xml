@@ -7,7 +7,11 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <app name="g2p_config_settings" position="inside">
-                <block name="encryption_settings_container" title="G2P Registry Encryption Settings">
+                <block
+                    name="encryption_settings_container"
+                    title="G2P Registry Encryption Settings"
+                    groups="g2p_encryption.crypto_admin"
+                >
                     <setting
                         string="Registry Encryption Provider Config"
                         help="Select the encryption provider to encrypt the registry"
