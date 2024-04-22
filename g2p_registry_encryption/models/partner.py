@@ -33,6 +33,8 @@ class EncryptedPartner(models.Model):
         if not is_encrypt_fields:
             return super().create(vals_list)
 
+        vals_list = [vals_list] if isinstance(vals_list, dict) else vals_list
+
         prov = self.env["g2p.encryption.provider"].get_registry_provider()
         for vals in vals_list:
             if vals.get("is_registrant", False):
@@ -69,8 +71,8 @@ class EncryptedPartner(models.Model):
         return super().write(vals)
 
     def _read(self, fields):
-        fields = set(fields)
         res = super()._read(fields)
+        fields = set(fields)
         prov = self.env["g2p.encryption.provider"].get_registry_provider()
         enc_fields_set = prov.get_registry_fields_set_to_enc().intersection(fields)
         if not enc_fields_set:
