@@ -62,7 +62,7 @@ class EncryptedPartner(models.Model):
                     vals = rec_values_list
                 else:
                     vals = json.loads(prov.decrypt_data(encrypted_val).decode()).update(vals)
-                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
+                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals, prov)
 
                 vals["encrypted_val"] = prov.encrypt_data(json.dumps(to_be_encrypted).encode())
 
