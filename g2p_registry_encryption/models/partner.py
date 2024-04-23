@@ -33,6 +33,8 @@ class EncryptedPartner(models.Model):
         if not is_encrypt_fields:
             return super().create(vals_list)
 
+        vals_list = [vals_list] if isinstance(vals_list, dict) else vals_list
+
         prov = self.env["g2p.encryption.provider"].get_registry_provider()
         for vals in vals_list:
             if vals.get("is_registrant", False):
@@ -62,15 +64,15 @@ class EncryptedPartner(models.Model):
                     vals = rec_values_list
                 else:
                     vals = json.loads(prov.decrypt_data(encrypted_val).decode()).update(vals)
-                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals)
+                to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals, prov)
 
                 vals["encrypted_val"] = prov.encrypt_data(json.dumps(to_be_encrypted).encode())
 
         return super().write(vals)
 
     def _fetch_query(self, query, fields):
-        fields = set(fields)
         res = super()._fetch_query(query, fields)
+        fields = {field.name for field in fields}
         prov = self.env["g2p.encryption.provider"].get_registry_provider()
         enc_fields_set = prov.get_registry_fields_set_to_enc().intersection(fields)
         if not enc_fields_set:
