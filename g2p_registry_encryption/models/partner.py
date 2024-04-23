@@ -18,7 +18,7 @@ class EncryptedPartner(models.Model):
     ):
         to_be_enc = {}
         for each in prov.get_registry_fields_set_to_enc():
-            if fields_dict.get(each, None):
+            if fields_dict and fields_dict.get(each, None):
                 to_be_enc[each] = fields_dict[each]
                 if replace:
                     fields_dict[each] = prov.registry_enc_field_placeholder
@@ -63,7 +63,9 @@ class EncryptedPartner(models.Model):
                     rec_values_list["is_encrypted"] = True
                     vals = rec_values_list
                 else:
-                    vals = json.loads(prov.decrypt_data(encrypted_val).decode()).update(vals)
+                    decrypted_vals = json.loads(prov.decrypt_data(encrypted_val or b"{}").decode())
+                    decrypted_vals.update(vals)
+                    vals = decrypted_vals
                 to_be_encrypted = self.gather_fields_to_be_enc_from_dict(vals, prov)
 
                 vals["encrypted_val"] = prov.encrypt_data(json.dumps(to_be_encrypted).encode())
